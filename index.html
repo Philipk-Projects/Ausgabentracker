@@ -112,11 +112,11 @@
           <div class="form-row">
             <label>
               Was hast du im Einkaufswagen?
-              <input id="shopping-description" type="text" placeholder="z. B. Milch" required maxlength="60" />
+              <input id="shopping-description" type="text" placeholder="z. B. Milch (optional)" maxlength="60" />
             </label>
             <label>
               Preis (€)
-              <input id="shopping-amount" type="number" placeholder="0,00" required min="0.01" step="0.01" />
+              <input id="shopping-amount" type="number" placeholder="0,00 (optional)" min="0" step="0.01" />
             </label>
           </div>
           <button type="submit">Zum Einkaufswagen hinzufügen</button>
@@ -142,8 +142,8 @@
         <h2 id="start-dialog-title">Was möchtest du nutzen?</h2>
         <p>Du kannst jederzeit über das Menü oben rechts wechseln.</p>
         <div class="start-actions">
-          <button type="button" data-tracker-choice="expenses">Ausgaben-Tracker</button>
-          <button type="button" data-tracker-choice="shopping">Einkaufs-Tracker</button>
+          <button type="button" data-tracker-choice="expenses">AusgabenTracker</button>
+          <button type="button" data-tracker-choice="shopping">Einkauf planen</button>
         </div>
       </div>
     </dialog>
