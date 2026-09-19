@@ -1,0 +1,17 @@
+{
+  "name": "AusgabenTracker",
+  "short_name": "Ausgaben",
+  "description": "Eine einfache App für deine Ausgaben und Monatsplanung.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#10141d",
+  "theme_color": "#10141d",
+  "icons": [
+    {
+      "src": "icons/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

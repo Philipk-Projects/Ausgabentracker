@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AusgabenTracker</title>
+    <meta name="theme-color" content="#10141d" />
+    <meta name="description" content="Eine einfache App für deine Ausgaben und Monatsplanung." />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="icons/app-icon.svg" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">MEINE FINANZEN</p>
+          <h1>AusgabenTracker</h1>
+          <p class="intro">Plane deine Ausgaben und Einkäufe einfach.</p>
+        </div>
+        <label class="tracker-menu">
+          Bereich
+          <select id="tracker-switch" aria-label="Bereich wechseln">
+            <option value="expenses">Ausgaben</option>
+            <option value="shopping">Einkauf</option>
+          </select>
+        </label>
+      </header>
+
+      <section class="summary" aria-label="Zusammenfassung" data-view="expenses">
+        <div class="summary-item">
+          <span>Monatslohn</span>
+          <strong id="income-total">0,00 €</strong>
+        </div>
+        <div class="summary-item">
+          <span>Ausgaben</span>
+          <strong id="total">0,00 €</strong>
+        </div>
+        <div class="summary-item">
+          <span>Noch verfügbar</span>
+          <strong id="available-total">0,00 €</strong>
+        </div>
+      </section>
+
+      <section class="card" data-view="expenses">
+        <h2>Monatsplanung</h2>
+        <form id="plan-form">
+          <div class="form-row">
+            <label>
+              Monatlicher Lohn (€)
+              <input id="income" type="number" placeholder="z. B. 1200" min="0" step="0.01" />
+            </label>
+            <label>
+              Sparziel (€)
+              <input id="savings-goal" type="number" placeholder="z. B. 200" min="0" step="0.01" />
+            </label>
+          </div>
+          <button type="submit">Planung speichern</button>
+        </form>
+        <p id="plan-result" class="plan-result"></p>
+      </section>
+
+      <section class="card" data-view="expenses">
+        <h2>Neue Ausgabe</h2>
+        <form id="expense-form">
+          <label>
+            Beschreibung
+            <input id="description" type="text" placeholder="z. B. Mittagessen" required maxlength="60" />
+          </label>
+          <div class="form-row">
+            <label>
+              Betrag (€)
+              <input id="amount" type="number" placeholder="0,00" required min="0.01" step="0.01" />
+            </label>
+            <label>
+              Kategorie
+              <select id="category">
+                <option>Abonnement</option>
+                <option>Elektronik</option>
+                <option>Hobby</option>
+                <option>Lebensmittel</option>
+                <option>Miete</option>
+                <option>Textil</option>
+                <option>Sonstiges</option>
+              </select>
+            </label>
+          </div>
+          <button type="submit">Ausgabe hinzufügen</button>
+        </form>
+      </section>
+
+      <section class="card shopping-card" data-view="shopping">
+        <div class="section-title">
+          <h2>Einkaufsplan</h2>
+          <button id="reset-shopping" class="text-button" type="button">Einkauf zurücksetzen</button>
+        </div>
+        <p class="card-intro">Lege dein Ziel fest und trage im Laden einfach Artikel und Preise ein.</p>
+        <form id="shopping-budget-form" class="shopping-budget-form">
+          <label>
+            Budget für diesen Einkauf (€)
+            <input id="shopping-budget" type="number" placeholder="z. B. 50" min="0" step="0.01" />
+          </label>
+          <button type="submit">Budget speichern</button>
+        </form>
+
+        <div class="shopping-summary" aria-live="polite">
+          <div><span>Im Einkaufswagen</span><strong id="shopping-total">0,00 €</strong></div>
+          <div><span>Noch übrig</span><strong id="shopping-remaining">–</strong></div>
+        </div>
+
+        <form id="shopping-form">
+          <div class="form-row">
+            <label>
+              Was hast du im Einkaufswagen?
+              <input id="shopping-description" type="text" placeholder="z. B. Milch (optional)" maxlength="60" />
+            </label>
+            <label>
+              Preis (€)
+              <input id="shopping-amount" type="number" placeholder="0,00 (optional)" min="0" step="0.01" />
+            </label>
+          </div>
+          <button type="submit">Zum Einkaufswagen hinzufügen</button>
+        </form>
+
+        <p id="shopping-empty-state">Noch nichts im Einkaufswagen.</p>
+        <ul id="shopping-list" aria-live="polite"></ul>
+      </section>
+
+      <section class="card expenses-card" data-view="expenses">
+        <div class="section-title">
+          <h2>Deine Ausgaben</h2>
+          <button id="clear-all" class="text-button" type="button">Alle löschen</button>
+        </div>
+        <p id="empty-state">Noch keine Ausgaben eingetragen.</p>
+        <ul id="expense-list" aria-live="polite"></ul>
+      </section>
+    </main>
+
+    <dialog id="start-dialog" class="start-dialog" aria-labelledby="start-dialog-title">
+      <div>
+        <p class="eyebrow">WILLKOMMEN</p>
+        <h2 id="start-dialog-title">Was möchtest du nutzen?</h2>
+        <p>Du kannst jederzeit über das Menü oben rechts wechseln.</p>
+        <div class="start-actions">
+          <button type="button" data-tracker-choice="expenses">AusgabenTracker</button>
+          <button type="button" data-tracker-choice="shopping">Einkauf planen</button>
+        </div>
+      </div>
+    </dialog>
+
+    <script src="script.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./service-worker.js');
+      }
+    </script>
+  </body>
+</html>
